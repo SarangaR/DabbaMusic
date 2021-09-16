@@ -24,7 +24,7 @@ async def on_ready():
     await client.change_presence(status=discord.Status.do_not_disturb, activity=discord.Game('Music Bot'))
     print(f'Logged in as {client.user}')
 
-with open('toke.0', 'r', encoding='utf-8') as f:
+with open('token.0', 'r', encoding='utf-8') as f:
     TOKEN = f.read()
 
 client.run(TOKEN)
