@@ -23,14 +23,14 @@ class music(commands.Cog):
 
     @commands.command()
     async def play(self, ctx, url):
-        vc = ctx.voice_client
-        if not vc:
+        if not ctx.voice_client:
             await ctx.invoke(self.join)
         FFMPEG_OPTIONS = {
             'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
              'options': '-vn'
              }
         YDL_OPTIONS = {'format': 'bestaudio/best'}
+        vc = ctx.voice_client
         await ctx.send('Playing...')
         with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
             info = ydl.extract_info(url, download = False)
