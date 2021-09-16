@@ -2,8 +2,7 @@ import discord
 import json
 from discord.ext import commands
 import music
-
-TOKEN = 'ODg1NjY3MjYxNjkwNTc2ODk3.YTqX6g.41lKIoyUqLfCaXXeLwIsED2o5bI'
+import os
 
 cogs = [music]
 
@@ -24,5 +23,8 @@ async def changeprefix(ctx, prefix):
 async def on_ready():
     await client.change_presence(status=discord.Status.do_not_disturb, activity=discord.Game('Music Bot'))
     print(f'Logged in as {client.user}')
+
+with open('toke.0', 'r', encoding='utf-8') as f:
+    TOKEN = f.read()
 
 client.run(TOKEN)
