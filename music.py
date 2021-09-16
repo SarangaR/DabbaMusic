@@ -13,18 +13,24 @@ class music(commands.Cog):
         voice_channel = ctx.author.voice.channel
         await voice_channel.connect()
 
+
     @commands.command()
     async def disconnect(self, ctx):
-        await ctx.voice_client.disconnect()
+        if ctx.voice_client:
+            await ctx.voice_client.disconnect()
+        else:
+            await ctx.send('I am not in a voice channel!')
 
     @commands.command()
     async def play(self, ctx, url):
+        vc = ctx.voice_client
+        if not vc:
+            await ctx.invoke(self.join)
         FFMPEG_OPTIONS = {
             'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
              'options': '-vn'
              }
-        YDL_OPTIONS = {'format': 'bestaudio'}
-        vc = ctx.voice_client
+        YDL_OPTIONS = {'format': 'bestaudio/best'}
         await ctx.send('Playing...')
         with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
             info = ydl.extract_info(url, download = False)
