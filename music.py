@@ -10,8 +10,12 @@ class music(commands.Cog):
     async def join(self, ctx):
         if ctx.author.voice is None:
             await ctx.send('You are not in a voice channel!')
-        voice_channel = ctx.author.voice.channel
-        await voice_channel.connect()
+        if not ctx.voice_client:
+            voice_channel = ctx.author.voice.channel
+            await voice_channel.connect()
+        else:
+            await ctx.send('Already joined voice channel!')
+            return
 
 
     @commands.command()
@@ -20,11 +24,11 @@ class music(commands.Cog):
             await ctx.voice_client.disconnect()
         else:
             await ctx.send('I am not in a voice channel!')
+            return
 
     @commands.command()
     async def play(self, ctx, url):
-        if not ctx.voice_client:
-            await ctx.invoke(self.join)
+        await ctx.invoke(self.join)
         FFMPEG_OPTIONS = {
             'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
              'options': '-vn'
