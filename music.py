@@ -13,6 +13,28 @@ class music(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    FFMPEG_OPTIONS = {
+        'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
+        'options': '-vn'
+    }
+    YDL_OPTIONS = {
+        'format': 'bestaudio/best',
+        'extractaudio': True,
+        'audioformat': 'mp3',
+        'outtmpl': '%(extractor)s-%(id)s-%(title)s.%(ext)s',
+        'restrictfilenames': True,
+        'noplaylist': True,
+        'nocheckcertificate': True,
+        'ignoreerrors': False,
+        'logtostderr': False,
+        'quiet': True,
+        'no_warnings': True,
+        'default_search': 'auto',
+        'source_address': '0.0.0.0',
+        }
+
+    ytdl = youtube_dl.YoutubeDL(YDL_OPTIONS)
+
     @commands.command()
     async def join(self, ctx):
         if ctx.author.voice is None:
@@ -52,7 +74,7 @@ class music(commands.Cog):
             vc.play(source)
 
     @commands.command()
-    async def search(self, cls, ctx, search: str, *, loop):
+    async def search(cls, ctx, search: str, *, loop):
         loop = loop or asyncio.get_event_loop()
 
         partial = functools.partial(cls.ytdl.extract_info, search, download=False, process=False)
