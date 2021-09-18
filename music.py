@@ -54,7 +54,7 @@ class music(commands.Cog):
             vc.play(source)
 
     @commands.command()
-    async def search(self, cls, ctx: commands.Context, search: str, *, loop: asyncio.BaseEventLoop = None):
+    async def search(self, cls, ctx, search: str, *, loop: asyncio.BaseEventLoop = None):
         if not ctx.voice_state.voice:
             await ctx.invoke(self.join)
         loop = loop or asyncio.get_event_loop()
@@ -63,7 +63,7 @@ class music(commands.Cog):
         data = await loop.run_in_executor(None, partial)
 
         if data is None:
-            await ctx.send('Couldn\'t find anything that matches {}'.format(search))
+            await ctx.send('Couldn\'t find anything that matches `{}`'.format(search))
         
         if 'entries' not in data:
             process_info = data
@@ -75,14 +75,14 @@ class music(commands.Cog):
                     break
         
         if process_info is None:
-            await ctx.send('Couldn\'t find anything that matches {}'.format(search))
+            await ctx.send('Couldn\'t find anything that matches `{}`'.format(search))
 
         webpage_url = process_info['webpage_url']
         partial = functools.partial(cls.ytdl.extract_info, webpage_url, download=False)
         processed_info = await loop.run_in_executor(None, partial)
 
         if processed_info is None:
-            await ctx.send('Couldn\'t fetch {}'.format(webpage_url))
+            await ctx.send('Couldn\'t fetch `{}`'.format(webpage_url))
         
         if 'entries' not in processed_info:
             info = processed_info
@@ -92,7 +92,7 @@ class music(commands.Cog):
                 try:
                     info = processed_info['entries'].pop(0)
                 except IndexError:
-                    await ctx.send('Couldn\'t retrieve any mathces for {}'.format(webpage_url))
+                    await ctx.send('Couldn\'t retrieve any matches for `{}`'.format(webpage_url))
 
         source = cls(ctx, discord.FFmpegPCMAudio(info['url'], **cls.FFMPEG_OPTIONS), data=info)
         vc = ctx.voice_client
