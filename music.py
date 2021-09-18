@@ -195,9 +195,3 @@ class music(commands.Cog):
     async def resume(self, ctx):
         ctx.voice_client.resume()
         await ctx.send('Resume')
-
-async def setup():
-    await client.wait_until_ready()
-    client.add_cog(music(client))
-
-client.loop.create_task(setup())
