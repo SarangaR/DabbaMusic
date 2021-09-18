@@ -43,7 +43,7 @@ class music(commands.Cog):
 
     @commands.command()
     async def play(self, ctx, url):
-        if not ctx.voice_state.voice:
+        if not ctx.voice_client:
             await ctx.invoke(self.join)
         vc = ctx.voice_client
         await ctx.send('Playing...')
@@ -55,7 +55,7 @@ class music(commands.Cog):
 
     @commands.command()
     async def search(self, cls, ctx, search: str, *, loop):
-        if not ctx.voice_state.voice:
+        if not ctx.voice_client:
             await ctx.invoke(self.join)
         loop = loop or asyncio.get_event_loop()
 
