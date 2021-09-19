@@ -191,5 +191,5 @@ class music(commands.Cog):
         ctx.voice_client.resume()
         await ctx.send('Resume')
 
-def setup(self, client):
+def setup(client):
     client.add_cog(music(client))
