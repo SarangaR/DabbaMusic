@@ -16,11 +16,8 @@ class music(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.song_queue = {}
-
-    def setup(self, client):
         for guild in self.client.guilds:
             self.song_queue[guild.id] = []
-        client.add_cog(music(client))
 
     @commands.command()
     async def join(self, ctx):
@@ -193,3 +190,6 @@ class music(commands.Cog):
     async def resume(self, ctx):
         ctx.voice_client.resume()
         await ctx.send('Resume')
+
+def setup(self, client):
+    client.add_cog(music(client))
