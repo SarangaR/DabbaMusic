@@ -6,7 +6,6 @@ import random
 
 import discord
 from discord import colour
-from discord import client
 from discord.ext import commands
 import youtube_dl
 import pafy
@@ -23,6 +22,7 @@ class music(commands.Cog):
     def setup(self, client):
         for guild in self.client.guilds:
             self.song_queue[guild.id] = []
+        client.add_cog(music(client))
 
     @commands.command()
     async def join(self, ctx):
