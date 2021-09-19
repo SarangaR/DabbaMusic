@@ -17,8 +17,6 @@ class music(commands.Cog):
         self.client = client
         self.song_queue = {}
 
-        self.setup()
-
     def setup(self, client):
         for guild in self.client.guilds:
             self.song_queue[guild.id] = []
