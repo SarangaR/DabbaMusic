@@ -46,11 +46,14 @@ class music(commands.Cog):
     YDL_OPTIONS = {'format': 'bestaudio/best', 'quiet' : True}
 
     async def check_queue(self, ctx):
-        if len(self.song_queue[ctx.guild.id]) > 0:
-            ctx.voice_client.stop()
-            await self.play_song(ctx, self.song_queue[ctx.guild.id][0])
-            self.song_queue[ctx.guild.id].pop(0)
-
+        try:
+            if len(self.song_queue[ctx.guild.id]) > 0:
+                ctx.voice_client.stop()
+                await self.play_song(ctx, self.song_queue[ctx.guild.id][0])
+                self.song_queue[ctx.guild.id].pop(0)
+        except KeyError:
+            pass
+        
     async def search_song(self, amount, song, get_url=False):
         info = await self.client.loop.run_in_executor(None, lambda: youtube_dl.YoutubeDL(self.YDL_OPTIONS).extract_info(f'ytsearch{amount}:{song}', download=False, ie_key = 'YoutubeSearch'))
         if len(info['entries']) == 0: return None
